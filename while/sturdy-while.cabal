@@ -50,6 +50,8 @@ library
                        Props.UseDef.DeadStores.Concrete
                        Props.UseDef.DeadStores.Interval
 
+                       Fixes.Persistent
+
 
   ghc-options:         -Wall
   build-depends:       base,

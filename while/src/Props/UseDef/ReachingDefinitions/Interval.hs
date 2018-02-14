@@ -20,12 +20,15 @@ import Data.Text (Text)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import Data.Order
+import qualified Data.Store as S
 
 import Control.Arrow
 import Control.Arrow.Fail
 import Control.Arrow.Fix
 import Control.Arrow.State
 import Control.Arrow.Utils
+
+import Fixes.Persistent
 
 
 store :: (ArrowChoice c, HasStore c Store, HasProp c Prop) => c (Text,Val,Label) ()
@@ -44,13 +47,13 @@ initState = (initStore, bottom)
 
 type In a = (State,a)
 type Out a = Error String (State,a)
-type M = StateArrow State (ErrorArrow String (Fix (In [Statement]) (Out ())))
+type M = PersistentArrow Label Prop (StateArrow State (ErrorArrow String (->))) [Statement] ()
 
-runM :: [Statement] -> Error String (State,())
-runM ss = runFix (runErrorArrow (runStateArrow L.run)) (initState, ss)
+runM :: [Statement] -> Error String (State, (S.Store Label Prop, ()))
+runM ss = runErrorArrow (runStateArrow (runPersistentInit (L.run :: M [Statement] ()))) (initState, ss)
 
-run :: [Statement] -> Error String (Store,Prop)
-run = fmap fst . runM
+run :: [Statement] -> Error String (Store,S.Store Label Prop)
+run = fmap (\((st,_), (pers,_)) -> (st,pers)) . runM
 
 instance L.HasStore M Store where
   getStore = getA >>> arr fst
