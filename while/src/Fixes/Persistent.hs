@@ -18,7 +18,7 @@ import Data.Hashable
 import Data.Order
 import Data.Store (Store)
 import qualified Data.Store as S
-import Control.Arrow.Utils (injectBoth, eject,mapA,voidA)
+import Control.Arrow.Utils (injectBoth, eject)
 import Control.Arrow.Fail
 import Control.Arrow.State
 

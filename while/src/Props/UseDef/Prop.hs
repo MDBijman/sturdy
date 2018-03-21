@@ -13,20 +13,24 @@ import GHC.Generics (Generic)
 -- Trace: Use and def events
 ---------------
 
-data TrUseDef =
+data TrUseDef v =
   -- A use of variable `text` with `label`
   TrUse Text Label |
   -- A definition of variable `text` at assignment `label`
-  TrDef Text Label
+  TrDef Text v Label
   deriving (Eq,Show,Generic)
 
 useDefName :: TrUseDef -> Text
 useDefName (TrUse t _) = t
 useDefName (TrDef t _) = t
 
+useDefLabel :: TrUseDef -> Label
+useDefLabel (TrUse _ l) = l
+useDefLabel (TrDef _ l) = l
+
 instance Hashable TrUseDef where
 
-type Trace = [TrUseDef]
+type Trace v = [TrUseDef v]
 
 initTrace :: Trace
 initTrace = []

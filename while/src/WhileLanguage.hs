@@ -55,7 +55,7 @@ type Prog = [Statement]
 class Arrow c => HasStore c st where
   getStore :: c () st
   putStore :: c st ()
-  modifyStore :: (c (x,st) st) -> c x ()
+  modifyStore :: c (x, st) st -> c x ()
   modifyStore f = proc x -> do
     st <- getStore -< ()
     putStore <<< f -< (x,st)
@@ -63,7 +63,7 @@ class Arrow c => HasStore c st where
 class Arrow c => HasProp c pr where
   getProp :: c () pr
   putProp :: c pr ()
-  modifyProp :: (c (x,pr) pr) -> c x ()
+  modifyProp :: c (x, pr) pr -> c x ()
   modifyProp f = proc x -> do
     pr <- getProp -< ()
     putProp <<< f -< (x,pr)

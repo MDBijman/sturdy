@@ -33,7 +33,7 @@ lookup = modifyProp (arr $ \((x,l),tr) -> TrUse x l : tr)
      &&> Concrete.lookup
 
 store :: (ArrowChoice c, HasStore c Store, HasProp c Trace) => c (Text,Val,Label) ()
-store = modifyProp (arr $ \((x,_,l),tr) -> TrDef x l : tr)
+store = modifyProp (arr $ \((x,v,l),tr) -> TrDef x v l : tr)
     &&> Concrete.store
 
 ----------

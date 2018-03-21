@@ -79,7 +79,7 @@ mul = proc (v1,v2,l) -> case (v1,v2) of
 div :: (ArrowChoice c, ArrowFail String c) => c (Val,Val,Label) Val
 div = proc (v1,v2,l) -> case (v1,v2) of
   (NumVal n1,NumVal n2) -> returnA -< NumVal (n1 / n2)
-  _ -> failA -< "Expected two numbers as arguments for 'mul'"
+  _ -> failA -< "Expected two numbers as arguments for 'div'"
 
 eq :: (ArrowChoice c, ArrowFail String c) => c (Val,Val,Label) Val
 eq = proc (v1,v2,l) -> case (v1,v2) of
